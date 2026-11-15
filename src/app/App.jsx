@@ -8,7 +8,7 @@ import { submitFormToSheets, updateFormInSheets } from '../services/api/sheetsAp
 import { formPayloadAdapter } from '../services/adapters/formPayloadAdapter';
 import { nissanFormFlow } from '../flows/nissan/nissanFormFlow';
 import { nissanFieldSchema } from '../flows/nissan/nissanFieldSchema';
-import { FileText, Edit2, Home } from 'lucide-react';
+import { FileText, Home } from 'lucide-react';
 
 export const INITIAL_FORM_DATA = {
   // Sección 1: Datos Generales del Acreditado (Preguntas 1 a 15)
@@ -198,33 +198,6 @@ export default function App() {
           </div>
 
           <div className="nav-actions flex items-center gap-2">
-            {currentStep !== 0 && (
-              <button
-                id="nav-home-btn"
-                type="button"
-                onClick={handleReset}
-                className="btn btn-secondary btn-xs flex items-center gap-1"
-              >
-                <Home size={13} />
-                <span className="hide-on-mobile">Inicio</span>
-              </button>
-            )}
-
-            <button
-              id="nav-edit-portal-btn"
-              type="button"
-              onClick={() => setCurrentStep(-1)}
-              className="btn btn-secondary btn-xs flex items-center gap-1.5"
-              title="Abrir portal de consulta y edición de solicitudes"
-            >
-              {currentStep === -1 ? (
-                <FileText size={13} className="text-teal-accent" />
-              ) : (
-                <Edit2 size={13} className="text-teal-accent" />
-              )}
-              <span>{adminPassword ? "Solicitudes / Editar" : "Portal Edición"}</span>
-            </button>
-
             {adminPassword && (
               <button
                 type="button"
@@ -236,8 +209,35 @@ export default function App() {
                 className="btn btn-secondary btn-xs"
                 style={{ borderColor: 'rgba(239, 68, 68, 0.35)', color: '#fca5a5' }}
               >
-                Salir Admin
+                Cerrar Sesión
               </button>
+            )}
+
+            {isAdminUrl && (
+              <>
+                {currentStep !== 0 && (
+                  <button
+                    id="nav-home-btn"
+                    type="button"
+                    onClick={handleReset}
+                    className="btn btn-secondary btn-xs flex items-center gap-1"
+                  >
+                    <Home size={13} />
+                    <span className="hide-on-mobile">Inicio</span>
+                  </button>
+                )}
+
+                <button
+                  id="nav-edit-portal-btn"
+                  type="button"
+                  onClick={() => setCurrentStep(-1)}
+                  className="btn btn-secondary btn-xs flex items-center gap-1.5"
+                  title="Abrir portal de consulta y edición de solicitudes"
+                >
+                  <FileText size={13} className="text-teal-accent" />
+                  <span>Ver Solicitudes</span>
+                </button>
+              </>
             )}
 
             <span className="badge badge-outline">
@@ -248,7 +248,7 @@ export default function App() {
                 : currentStep === 8
                 ? "Revisión"
                 : currentStep >= 1 && currentStep <= 7
-                ? `Sección ${currentStep}/7`
+                ? `Sección ${currentStep} de 7`
                 : "Persona Física"}
             </span>
           </div>
@@ -289,7 +289,6 @@ export default function App() {
               setErrors={setErrors}
               formFlow={nissanFormFlow}
               fieldSchema={nissanFieldSchema}
-              onOpenAdminPortal={() => setCurrentStep(-1)}
             />
           )}
 

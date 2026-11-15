@@ -27,7 +27,6 @@ import {
 } from '../flows/nissan/nissanFieldSchema';
 import { validateField } from '../utils/validators';
 import { formatToDDMMYYYY } from '../services/adapters/formPayloadAdapter';
-import nissanHeroImg from '../assets/nissan-hero.jpg';
 
 const calculateAntiguedadFromDate = (dateStr) => {
   if (!dateStr) return "";
@@ -54,8 +53,7 @@ export default function ConversationalFormPage({
   setFormData,
   setErrors,
   formFlow = nissanFormFlow,
-  fieldSchema = nissanFieldSchema,
-  onOpenAdminPortal
+  fieldSchema = nissanFieldSchema
 }) {
   // Lista dinámica de preguntas activas según las condiciones (Estado Civil y Situación Laboral)
   const allFieldKeys = getActiveFieldKeys(formData, formFlow, fieldSchema);
@@ -348,23 +346,20 @@ export default function ConversationalFormPage({
 
     if (isAdminMode) {
       return (
-        <div className="welcome-container animate-fade-in max-w-2xl mx-auto text-center py-8">
-          <div className="nissan-hero-card">
-            <img src={nissanHeroImg} alt="Nissan Showroom" className="nissan-hero-img" />
-            <div className="nissan-hero-overlay text-left">
-              <span className="nissan-hero-tag">
-                <ShieldCheck size={14} /> CREDI NISSAN · PANEL ADMINISTRATIVO
-              </span>
-              <h1 className="welcome-title">GESTIÓN Y EDICIÓN DE SOLICITUDES</h1>
-              <p className="welcome-subtitle">
-                Consulta, busca y corrige expedientes conectados en tiempo real a SOL_CREDITO_ACTUAL_2026.
-              </p>
-            </div>
+        <div className="welcome-container animate-fade-in max-w-2xl mx-auto text-center py-12">
+          <div className="brand-logo-container flex items-center justify-center gap-2 mb-4">
+            <ShieldCheck size={22} className="text-teal-accent" />
+            <h2 className="brand-badge">CREDI NISSAN · PANEL ADMIN</h2>
           </div>
+
+          <h1 className="welcome-title mb-2">ADMINISTRACIÓN DE SOLICITUDES</h1>
+          <p className="welcome-subtitle text-gray-400 mb-8 font-semibold">
+            Consulta y edita expedientes registrados en SOL_CREDITO_ACTUAL_2026
+          </p>
 
           <div className="glass-panel p-8 rounded-xl max-w-md mx-auto bg-dark-card">
             <p className="text-sm text-gray-300 mb-6">
-              Selecciona una acción para gestionar las solicitudes de crédito Nissan:
+              Este es tu panel privado para gestionar las solicitudes de crédito Nissan:
             </p>
             <div className="flex flex-col gap-4">
               <button
@@ -377,7 +372,7 @@ export default function ConversationalFormPage({
                 }}
                 className="btn btn-primary w-full flex items-center justify-center gap-2 py-3"
               >
-                <Plus size={18} /> Capturar Nueva Solicitud
+                <Plus size={18} /> Iniciar Nueva Solicitud
               </button>
               <button
                 id="admin-view-requests-btn"
@@ -385,7 +380,7 @@ export default function ConversationalFormPage({
                 onClick={() => setCurrentStep(-1)}
                 className="btn btn-secondary w-full flex items-center justify-center gap-2 py-3"
               >
-                <FileText size={18} className="text-teal-accent" /> Ver y Editar Solicitudes Guardadas
+                <FileText size={18} className="text-teal-accent" /> Ver y Editar Solicitudes
               </button>
             </div>
           </div>
@@ -395,20 +390,14 @@ export default function ConversationalFormPage({
 
     return (
       <div className="welcome-container animate-fade-in max-w-2xl mx-auto">
-        {/* Hero Banner Nissan */}
-        <div className="nissan-hero-card">
-          <img
-            src={nissanHeroImg}
-            alt="Credi Nissan Solicitud de Crédito"
-            className="nissan-hero-img"
-          />
-          <div className="nissan-hero-overlay">
-            <span className="nissan-hero-tag">CREDI NISSAN · PERSONA FÍSICA</span>
-            <h1 className="welcome-title">Solicitud de Crédito Automotriz</h1>
-            <p className="welcome-subtitle">
-              Captura guiada paso a paso con validación inteligente.
-            </p>
+        <div className="flex flex-col items-center text-center mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="nissan-emblem-badge">
+              <span className="nissan-emblem-bar">NISSAN</span>
+            </div>
+            <h2 className="brand-badge">CREDI NISSAN</h2>
           </div>
+          <h1 className="welcome-title text-center">Asistente de Solicitud</h1>
         </div>
 
         <div className="welcome-chat-box">
@@ -419,10 +408,10 @@ export default function ConversationalFormPage({
             <div className="ai-core-visualizer">
               <div className="ai-core-sphere"></div>
               <div className="ai-core-info">
-                <h2 className="ai-core-title">Asesor Digital Credi Nissan</h2>
+                <h2 className="ai-core-title">Asesor Credi Nissan</h2>
                 <div className="ai-core-status">
                   <span className="ai-core-status-dot"></span>
-                  <span>{welcomeStep < 3 ? "Preparando guía..." : "En línea · Listo para comenzar"}</span>
+                  <span>{welcomeStep < 3 ? "Asesor escribiendo..." : "En línea"}</span>
                 </div>
               </div>
             </div>
@@ -433,7 +422,7 @@ export default function ConversationalFormPage({
               <div key={index} className="ai-msg-row bot animate-message-slide">
                 <div className="ai-bubble bot">
                   <p>{paragraph}</p>
-                  <span className="ai-time-label">Credi Nissan</span>
+                  <span className="ai-time-label">IA</span>
                 </div>
               </div>
             ))}
@@ -446,31 +435,21 @@ export default function ConversationalFormPage({
                     <div className="ai-typing-dot"></div>
                     <div className="ai-typing-dot"></div>
                   </div>
+                  <span className="ai-time-label">Asesor preparando tu entrevista...</span>
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-3 mt-6">
+        <div className="text-center mt-8">
           <button
             id="start-intake-btn"
             onClick={handleNext}
             className="btn btn-primary btn-large"
           >
-            Comenzar Solicitud <ArrowRight size={18} />
+            ¡Empecemos! <ArrowRight size={18} />
           </button>
-
-          {onOpenAdminPortal && (
-            <button
-              id="welcome-edit-portal-btn"
-              type="button"
-              onClick={onOpenAdminPortal}
-              className="btn btn-secondary btn-xs mt-1"
-            >
-              <Edit2 size={13} /> ¿Necesitas corregir una solicitud enviada? Ir al Portal de Edición
-            </button>
-          )}
         </div>
       </div>
     );
