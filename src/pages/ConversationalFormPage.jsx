@@ -550,9 +550,6 @@ export default function ConversationalFormPage({
         <span className="step-badge font-bold">
           Sección {activeSchema.phase}: {currentPhaseObj?.title || "Solicitud"}
         </span>
-        <span className="text-xs text-gray-400">
-          Pregunta {currentQuestionIndex + 1} de {totalQuestions} ({progressPercent}%)
-        </span>
       </div>
 
       <div className="progress-bar-wrapper mb-4">
