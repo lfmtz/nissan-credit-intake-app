@@ -155,7 +155,7 @@ export default function ConversationalFormPage({
     if (!hasStarted) {
       const paragraphs = [
         "¡Hola! Bienvenido al portal digital de Solicitud de Crédito Credi Nissan.",
-        "Hemos organizado las preguntas en 7 capas breves y claras (Datos Generales, Identificación, Domicilio, Ingresos, Empleo y Referencias) para que llenes tu solicitud sin complicaciones.",
+        "He organizado tu solicitud en pasos sencillos y breves para que puedas llenarla de forma rápida y sin complicaciones.",
         "En cada paso verás indicaciones claras y botones de selección rápida. Al terminar podrás revisar y corregir cualquier dato antes de enviarlo. ¡Comencemos!"
       ];
 
