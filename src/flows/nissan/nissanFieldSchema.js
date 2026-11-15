@@ -118,8 +118,8 @@ export const nissanFieldSchema = {
   nombreAcreditado: {
     questionNumber: 1,
     label: "Nombre(s) del acreditado",
-    prompt: "¡Empecemos! Para ir registrando tus datos en orden, ¿cuál es tu nombre o nombres de pila? (Ahorita solo tu nombre, en los siguientes pasos te pido tus apellidos).",
-    helperText: "Escribe únicamente tu primer y segundo nombre, sin apellidos.",
+    prompt: "Coloca de favor tu nombre o nombres solamente, los apellidos te los preguntaré en un momento más.",
+    helperText: "Escribe únicamente tu nombre o nombres, sin apellidos.",
     type: "text",
     placeholder: "Ej. JUAN CARLOS",
     phase: 1,
