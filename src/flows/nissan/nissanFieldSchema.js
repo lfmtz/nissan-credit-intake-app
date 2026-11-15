@@ -104,6 +104,13 @@ export const computeIngresosNetos = (formData) => {
   return String(formData?.ingresosNetosMensuales || "").trim();
 };
 
+const formatNombreCortesia = (formData) => {
+  const raw = String(formData?.nombreAcreditado || "").trim();
+  if (!raw) return "";
+  const first = raw.split(/\s+/)[0];
+  return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+};
+
 export const nissanFieldSchema = {
   // =========================================================================
   // SECCIÓN 1: DATOS GENERALES DEL ACREDITADO (Preguntas 1 a 15)
@@ -127,6 +134,12 @@ export const nissanFieldSchema = {
     questionNumber: 2,
     label: "Apellido Paterno",
     prompt: "¡Mucho gusto! Ahora dime, ¿cuál es tu primer apellido (apellido paterno)?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `¡Mucho gusto ${n}! Ahora dime, ¿cuál es tu primer apellido (apellido paterno)?`
+        : "¡Mucho gusto! Ahora dime, ¿cuál es tu primer apellido (apellido paterno)?";
+    },
     helperText: "Tal como aparece en tu identificación oficial.",
     type: "text",
     placeholder: "Ej. HERNÁNDEZ",
@@ -281,6 +294,12 @@ export const nissanFieldSchema = {
     questionNumber: 12,
     label: "Número de Celular",
     prompt: "¿A qué número celular te podemos contactar?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `${n}, ¿a qué número celular te podemos contactar?`
+        : "¿A qué número celular te podemos contactar?";
+    },
     helperText: "Ingresa los 10 dígitos seguidos, sin espacios ni guiones.",
     type: "tel",
     placeholder: "Ej. 5512345678",
@@ -353,6 +372,12 @@ export const nissanFieldSchema = {
     questionNumber: 16,
     label: "Nombre(s) del Cónyuge",
     prompt: "¿Cuál es el nombre o nombres de pila de tu cónyuge o pareja (sin apellidos)?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `Perfecto ${n}, ¿cuál es el nombre o nombres de pila de tu cónyuge o pareja (sin apellidos)?`
+        : "¿Cuál es el nombre o nombres de pila de tu cónyuge o pareja (sin apellidos)?";
+    },
     helperText: "Escribe únicamente su(s) nombre(s). Sus apellidos los capturaremos en los siguientes pasos.",
     type: "text",
     placeholder: "Ej. MARÍA ELENA",
@@ -453,6 +478,12 @@ export const nissanFieldSchema = {
     questionNumber: 22,
     label: "Identificación Oficial",
     prompt: "¿Cuál es la identificación oficial vigente que nos proporcionas?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `Muy bien ${n}, ¿cuál es la identificación oficial vigente que nos proporcionas?`
+        : "¿Cuál es la identificación oficial vigente que nos proporcionas?";
+    },
     helperText: "Selecciona el documento oficial que presentarás para tu trámite.",
     type: "select",
     placeholder: "Selecciona tu identificación",
@@ -494,6 +525,12 @@ export const nissanFieldSchema = {
     questionNumber: 24,
     label: "Calle del Domicilio",
     prompt: "Pasemos a tu domicilio actual. ¿Cuál es el nombre de tu calle, avenida o cerrada?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `${n}, pasemos a tu domicilio actual. ¿Cuál es el nombre de tu calle, avenida o cerrada?`
+        : "Pasemos a tu domicilio actual. ¿Cuál es el nombre de tu calle, avenida o cerrada?";
+    },
     helperText: "Escribe únicamente el nombre de la calle o avenida, sin el número exterior ni interior.",
     type: "text",
     placeholder: "Ej. AV. INSURGENTES SUR",
@@ -677,6 +714,12 @@ export const nissanFieldSchema = {
     questionNumber: 36,
     label: "Situación Laboral Actual",
     prompt: "¿Cuál es tu situación laboral actualmente?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `¡Vas excelente ${n}! ¿Cuál es tu situación laboral actualmente?`
+        : "¿Cuál es tu situación laboral actualmente?";
+    },
     helperText: "• ASALARIADO: Compruebas ingresos con recibos de nómina.\n• INDEPENDIENTE: Negocio propio, profesionista o estados de cuenta bancarios.\n• PENSIONADO Ó JUBILADO: Recibes pensión mensual.",
     type: "select",
     placeholder: "Selecciona tu situación laboral",
@@ -762,6 +805,12 @@ export const nissanFieldSchema = {
     questionNumber: 37,
     label: "Nombre de la Empresa, Institución o Negocio",
     prompt: "¿Cuál es el nombre de la Empresa, Institución o Negocio donde trabajas?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `${n}, ¿cuál es el nombre de la Empresa, Institución o Negocio donde trabajas?`
+        : "¿Cuál es el nombre de la Empresa, Institución o Negocio donde trabajas?";
+    },
     helperText: "Nota: Si eres persona física con actividad empresarial o independiente sin nombre comercial, escribe tu propio nombre completo.",
     type: "text",
     placeholder: "Ej. NISSAN MEXICANA S.A. DE C.V. (o tu nombre si eres independiente)",
@@ -1022,6 +1071,12 @@ export const nissanFieldSchema = {
     questionNumber: 54,
     label: "Referencia 1 · Nombre(s)",
     prompt: "Para finalizar, registremos 3 referencias personales (familiares o amistades). ¿Cuál es el NOMBRE(S) de pila de tu Referencia 1 (sin apellidos)?",
+    dynamicPrompt: (fd) => {
+      const n = formatNombreCortesia(fd);
+      return n
+        ? `Ya casi terminamos, ${n}. Registremos 3 referencias personales (familiares o amistades). ¿Cuál es el NOMBRE(S) de pila de tu Referencia 1 (sin apellidos)?`
+        : "Para finalizar, registremos 3 referencias personales (familiares o amistades). ¿Cuál es el NOMBRE(S) de pila de tu Referencia 1 (sin apellidos)?";
+    },
     helperText: "Importante para Nissan: Escribe solo su nombre o nombres de pila. Sus apellidos van en las siguientes dos preguntas.",
     type: "text",
     placeholder: "Ej. PEDRO ANTONIO",
