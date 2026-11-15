@@ -151,35 +151,65 @@ export default function ConversationalFormPage({
     }
   }, [activeFieldKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Secuencia de bienvenida
+  // Secuencia de bienvenida con efecto de escritura IA
   useEffect(() => {
     if (!hasStarted) {
-      const p1 = "¡Hola! Bienvenido al portal digital de Solicitud de Crédito Credi Nissan (Persona Física).";
-      const p2 = "Hemos organizado las preguntas en 7 capas breves y claras (Datos Generales, Identificación, Domicilio, Ingresos, Empleo y Referencias) para que llenes tu solicitud sin complicaciones.";
-      const p3 = "En cada paso verás indicaciones claras y botones de selección rápida. Al terminar podrás revisar y corregir cualquier dato antes de enviarlo. ¡Comencemos!";
+      const paragraphs = [
+        "¡Hola! Bienvenido al portal digital de Solicitud de Crédito Credi Nissan.",
+        "Hemos organizado las preguntas en 7 capas breves y claras (Datos Generales, Identificación, Domicilio, Ingresos, Empleo y Referencias) para que llenes tu solicitud sin complicaciones.",
+        "En cada paso verás indicaciones claras y botones de selección rápida. Al terminar podrás revisar y corregir cualquier dato antes de enviarlo. ¡Comencemos!"
+      ];
 
       if (fastMode) {
-        setWelcomeParagraphs([p1, p2, p3]);
+        setWelcomeParagraphs(paragraphs);
         setWelcomeStep(3);
         return;
       }
 
-      const timers = [
-        setTimeout(() => {
-          setWelcomeParagraphs([p1]);
-          setWelcomeStep(1);
-        }, 200),
-        setTimeout(() => {
-          setWelcomeParagraphs([p1, p2]);
-          setWelcomeStep(2);
-        }, 450),
-        setTimeout(() => {
-          setWelcomeParagraphs([p1, p2, p3]);
-          setWelcomeStep(3);
-        }, 750)
-      ];
+      setWelcomeParagraphs([""]);
+      setWelcomeStep(0);
 
-      return () => timers.forEach(clearTimeout);
+      let pIdx = 0;
+      let charIdx = 0;
+      let pauseTicks = 0;
+
+      const interval = setInterval(() => {
+        if (pauseTicks > 0) {
+          pauseTicks -= 1;
+          return;
+        }
+
+        const targetText = paragraphs[pIdx];
+        if (!targetText) {
+          clearInterval(interval);
+          setWelcomeStep(3);
+          return;
+        }
+
+        charIdx = Math.min(targetText.length, charIdx + 3);
+        const currentSlice = targetText.slice(0, charIdx);
+
+        setWelcomeParagraphs((prev) => {
+          const next = [...prev];
+          next[pIdx] = currentSlice;
+          return next;
+        });
+
+        if (charIdx >= targetText.length) {
+          if (pIdx < paragraphs.length - 1) {
+            pIdx += 1;
+            charIdx = 0;
+            pauseTicks = 8; // breve pausa natural entre burbujas (~160ms)
+            setWelcomeStep(pIdx);
+            setWelcomeParagraphs((prev) => [...prev, ""]);
+          } else {
+            setWelcomeStep(3);
+            clearInterval(interval);
+          }
+        }
+      }, 20);
+
+      return () => clearInterval(interval);
     }
   }, [hasStarted, fastMode]);
 
@@ -197,19 +227,19 @@ export default function ConversationalFormPage({
     }
   }, [activeFieldKey, hasStarted]);
 
-  // Desplazamiento suave al fondo del chat
+  // Desplazamiento inmediato al fondo del chat al cambiar de pregunta
   useEffect(() => {
     if (chatBodyRef.current) {
       requestAnimationFrame(() => {
         if (chatBodyRef.current) {
           chatBodyRef.current.scrollTo({
             top: chatBodyRef.current.scrollHeight,
-            behavior: fastMode ? 'auto' : 'smooth'
+            behavior: 'auto'
           });
         }
       });
     }
-  }, [currentQuestionIndex, hasStarted, fastMode]);
+  }, [currentQuestionIndex, hasStarted]);
 
   const applySmartSideEffects = (key, cleanValue, draftFormData) => {
     const nextData = { ...draftFormData, [key]: cleanValue };
@@ -417,27 +447,31 @@ export default function ConversationalFormPage({
           </div>
 
           <div className="flex flex-col gap-3">
-            {welcomeParagraphs.map((paragraph, index) => (
-              <div key={index} className="ai-msg-row bot animate-message-slide">
-                <div className="ai-bubble bot">
-                  <p>{paragraph}</p>
-                  <span className="ai-time-label">IA</span>
-                </div>
-              </div>
-            ))}
-
-            {welcomeStep < 3 && (
-              <div className="ai-msg-row bot animate-message-slide">
-                <div className="ai-bubble bot active-question">
-                  <div className="ai-typing-dots">
-                    <div className="ai-typing-dot"></div>
-                    <div className="ai-typing-dot"></div>
-                    <div className="ai-typing-dot"></div>
+            {welcomeParagraphs.map((paragraph, index) => {
+              const isLast = index === welcomeParagraphs.length - 1;
+              const isTyping = welcomeStep < 3 && isLast;
+              return (
+                <div key={index} className="ai-msg-row bot animate-message-slide">
+                  <div className={`ai-bubble bot ${isTyping ? 'active-question' : ''}`}>
+                    {paragraph === "" ? (
+                      <div className="ai-typing-dots">
+                        <div className="ai-typing-dot"></div>
+                        <div className="ai-typing-dot"></div>
+                        <div className="ai-typing-dot"></div>
+                      </div>
+                    ) : (
+                      <p>
+                        {paragraph}
+                        {isTyping && <span className="ai-typing-cursor" aria-hidden="true">|</span>}
+                      </p>
+                    )}
+                    <span className="ai-time-label">
+                      {isTyping ? "Asesor escribiendo..." : "IA"}
+                    </span>
                   </div>
-                  <span className="ai-time-label">Asesor preparando tu entrevista...</span>
                 </div>
-              </div>
-            )}
+              );
+            })}
           </div>
         </div>
 

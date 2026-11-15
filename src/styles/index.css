@@ -765,11 +765,11 @@ select.form-control {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.35s ease-out forwards;
+  animation: fadeIn 0.15s ease-out forwards;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -1024,18 +1024,31 @@ select.form-control {
 }
 
 .animate-message-slide {
-  animation: messageSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: messageSlideUp 0.07s ease-out forwards;
 }
 
 @keyframes messageSlideUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.ai-typing-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: #ff4d70;
+  font-weight: 700;
+  animation: cursorBlink 0.7s steps(2, start) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .fast-mode .animate-message-slide,
