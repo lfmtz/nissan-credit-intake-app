@@ -66,7 +66,6 @@ export default function ConversationalFormPage({
       p.fields &&
       p.fields.some((k) => allFieldKeys.includes(k))
   );
-  const totalPhases = activePhases.length;
 
   const [currentKey, setCurrentKey] = useState(() => {
     if (currentStep > 0 && currentStep < 8) {
@@ -534,10 +533,6 @@ export default function ConversationalFormPage({
   };
 
   const currentPhaseObj = formFlow.phases.find((p) => p.id === activeSchema.phase);
-  const currentPhasePosition = Math.max(
-    1,
-    activePhases.findIndex((p) => p.id === activeSchema.phase) + 1
-  );
 
   // Opciones rápidas (chips) para selects cortos o sugerencias de parentesco
   const quickOptionsToShow =
@@ -613,9 +608,6 @@ export default function ConversationalFormPage({
               <Zap size={12} />
               <span>Modo rápido</span>
             </button>
-            <span className="ai-phase-tag">
-              Capa {currentPhasePosition}/{totalPhases}
-            </span>
           </div>
         </div>
 
