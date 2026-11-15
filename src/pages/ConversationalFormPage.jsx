@@ -27,6 +27,7 @@ import {
 } from '../flows/nissan/nissanFieldSchema';
 import { validateField } from '../utils/validators';
 import { formatToDDMMYYYY } from '../services/adapters/formPayloadAdapter';
+import NissanLogo from '../components/NissanLogo';
 
 const calculateAntiguedadFromDate = (dateStr) => {
   if (!dateStr) return "";
@@ -391,12 +392,10 @@ export default function ConversationalFormPage({
     return (
       <div className="welcome-container animate-fade-in max-w-2xl mx-auto">
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="nissan-emblem-badge">
-              <span className="nissan-emblem-bar">NISSAN</span>
-            </div>
-            <h2 className="brand-badge">CREDI NISSAN</h2>
-          </div>
+          <NissanLogo size={115} className="mb-2" />
+          <h2 className="brand-badge mb-2" style={{ letterSpacing: '0.24em', color: '#ff6b88' }}>
+            CREDI NISSAN
+          </h2>
           <h1 className="welcome-title text-center">Asistente de Solicitud</h1>
         </div>
 

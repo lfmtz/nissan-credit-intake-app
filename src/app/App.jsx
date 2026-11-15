@@ -9,6 +9,7 @@ import { formPayloadAdapter } from '../services/adapters/formPayloadAdapter';
 import { nissanFormFlow } from '../flows/nissan/nissanFormFlow';
 import { nissanFieldSchema } from '../flows/nissan/nissanFieldSchema';
 import { FileText, Home } from 'lucide-react';
+import NissanLogo from '../components/NissanLogo';
 
 export const INITIAL_FORM_DATA = {
   // Sección 1: Datos Generales del Acreditado (Preguntas 1 a 15)
@@ -182,14 +183,12 @@ export default function App() {
       <header className="app-nav-header">
         <div className="nav-container px-6 py-3">
           <div
-            className="flex items-center gap-3"
+            className="flex items-center gap-2.5"
             style={{ cursor: 'pointer' }}
             onClick={handleReset}
             title="Ir al inicio"
           >
-            <div className="nissan-emblem-badge">
-              <span className="nissan-emblem-bar">NISSAN</span>
-            </div>
+            <NissanLogo size={42} />
             <div>
               <span className="logo-text">
                 CREDI <span className="logo-subtext">NISSAN</span>
